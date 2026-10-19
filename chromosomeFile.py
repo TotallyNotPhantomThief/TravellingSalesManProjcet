@@ -6,7 +6,7 @@ from pathlib import Path
 import tsplib95
 import random
 import math
-
+from RankBasedSelection import rankSolution
 
 file_path = Path.home() / "Desktop" / "kroA100.tsp"
 
@@ -44,4 +44,18 @@ listOfTourLenghts = [tour_lenght(chromosome) for chromosome in population]
 
 #picking the shortest so we can out it direcatly to the other genaration.
 elitism = min(listOfTourLenghts)
+indexOfElit = listOfTourLenghts.index(min(listOfTourLenghts))
+#Removing them from popultaion both with index so first of all we can have a 99 chormosome and 
+# second of all to not have diffrent index's in lists.
+removingForSafety = population.pop(indexOfElit)
+removingForSafety2 = listOfTourLenghts.pop(indexOfElit)
+#Splitting the lists %50 percent just like in docx
+halfLenght = int(len(listOfTourLenghts) * 0.5)
+first50Per = listOfTourLenghts[:halfLenght]
+second50Per = listOfTourLenghts[halfLenght:]
+first50PerPop = population[:halfLenght]
+second50PerPop = population[halfLenght:]
+parentForRank = rankSolution(first50PerPop,first50Per)
+
+
 
