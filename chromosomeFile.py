@@ -7,7 +7,7 @@ import tsplib95
 import random
 import math
 from RankBasedSelection import rankSolution
-
+from RouletteSelection import rouletteSelection
 file_path = Path.home() / "Desktop" / "kroA100.tsp"
 
 tspFile = tsplib95.load(file_path)
@@ -56,6 +56,6 @@ second50Per = listOfTourLenghts[halfLenght:]
 first50PerPop = population[:halfLenght]
 second50PerPop = population[halfLenght:]
 parentForRank = rankSolution(first50PerPop,first50Per)
+parentForWheel = rouletteSelection(second50PerPop,second50Per)
 
-
-
+print(parentForWheel)
