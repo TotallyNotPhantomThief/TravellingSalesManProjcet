@@ -1,4 +1,9 @@
+#we basically select randomlyy a gen from chromosome and that get index of it and a index of random target
+#after that we swap them in the list without chaning the order of others
+
 import random
+
+
 def insertMutation(newGen):
  mutatedList = []
  for chromosome in newGen:

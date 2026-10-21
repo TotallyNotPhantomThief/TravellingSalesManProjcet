@@ -10,6 +10,8 @@ from RankBasedSelection import rankSolution
 from RouletteSelection import rouletteSelection
 from NextGeneration import creatingNextGeneration
 from InsertMutation import insertMutation
+from RandomSlideMutation import randomSlide
+
 file_path = Path.home() / "Desktop" / "kroA100.tsp"
 
 tspFile = tsplib95.load(file_path)
@@ -74,4 +76,5 @@ second50New = nextGeneration[halfLenghtNew:]
 
 insertMutation(first50New)
 
-
+randomSlide(second50New)
+print(randomSlide(second50New))
