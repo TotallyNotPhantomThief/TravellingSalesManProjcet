@@ -9,6 +9,7 @@ import math
 from RankBasedSelection import rankSolution
 from RouletteSelection import rouletteSelection
 from NextGeneration import creatingNextGeneration
+from InsertMutation import insertMutation
 file_path = Path.home() / "Desktop" / "kroA100.tsp"
 
 tspFile = tsplib95.load(file_path)
@@ -64,5 +65,13 @@ for chrom in population:
  parentForRank = rankSolution(first50PerPop,first50Per)
  parentForWheel = rouletteSelection(second50PerPop,second50Per)
  nextGeneration.append(creatingNextGeneration(parentForRank,parentForWheel))
+
+
+halfLenghtNew = int(len(nextGeneration) * 0.5)
+first50New = nextGeneration[:halfLenghtNew]
+first50New.pop(0)
+second50New = nextGeneration[halfLenghtNew:]
+
+insertMutation(first50New)
 
 
