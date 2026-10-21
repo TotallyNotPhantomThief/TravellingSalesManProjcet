@@ -8,6 +8,7 @@ import random
 import math
 from RankBasedSelection import rankSolution
 from RouletteSelection import rouletteSelection
+from NextGeneration import creatingNextGeneration
 file_path = Path.home() / "Desktop" / "kroA100.tsp"
 
 tspFile = tsplib95.load(file_path)
@@ -43,8 +44,8 @@ def tour_lenght(chromosome):
 listOfTourLenghts = [tour_lenght(chromosome) for chromosome in population]
 
 #picking the shortest so we can out it direcatly to the other genaration.
-elitism = min(listOfTourLenghts)
 indexOfElit = listOfTourLenghts.index(min(listOfTourLenghts))
+elitism = population[indexOfElit]
 #Removing them from popultaion both with index so first of all we can have a 99 chormosome and 
 # second of all to not have diffrent index's in lists.
 removingForSafety = population.pop(indexOfElit)
@@ -55,7 +56,13 @@ first50Per = listOfTourLenghts[:halfLenght]
 second50Per = listOfTourLenghts[halfLenght:]
 first50PerPop = population[:halfLenght]
 second50PerPop = population[halfLenght:]
-parentForRank = rankSolution(first50PerPop,first50Per)
-parentForWheel = rouletteSelection(second50PerPop,second50Per)
 
-print(parentForWheel)
+nextGeneration = []
+nextGeneration.append(elitism)
+
+for chrom in population: 
+ parentForRank = rankSolution(first50PerPop,first50Per)
+ parentForWheel = rouletteSelection(second50PerPop,second50Per)
+ nextGeneration.append(creatingNextGeneration(parentForRank,parentForWheel))
+
+
