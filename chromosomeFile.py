@@ -44,37 +44,50 @@ def tour_lenght(chromosome):
 
 #Sends each of the chromsome in population to tour_lenght functions one by one to calc each length then returns them and puts them in a list so we can compare or mutate later.
 
+
 listOfTourLenghts = [tour_lenght(chromosome) for chromosome in population]
+genCount = 0
+maxgen = 100
+bestTourLenght = 0
+noImproveCount = 0
+while(genCount < maxgen and noImproveCount < 5):
+   indexOfElit = listOfTourLenghts.index(min(listOfTourLenghts))
+   bestLenght = listOfTourLenghts[indexOfElit]
+   elitisim = population[indexOfElit].copy()
+   print(f"Generation: {genCount +1}. Best lenght: {bestLenght} ")
+   if bestLenght < bestTourLenght:
+      bestTourLenght = bestLenght
+      noImproveCount = 0
+   else:
+      noImproveCount += 1
+   genCount += 1      
 
-#picking the shortest so we can out it direcatly to the other genaration.
-indexOfElit = listOfTourLenghts.index(min(listOfTourLenghts))
-elitism = population[indexOfElit]
-#Removing them from popultaion both with index so first of all we can have a 99 chormosome and 
-# second of all to not have diffrent index's in lists.
-removingForSafety = population.pop(indexOfElit)
-removingForSafety2 = listOfTourLenghts.pop(indexOfElit)
-#Splitting the lists %50 percent just like in docx
-halfLenght = int(len(listOfTourLenghts) * 0.5)
-first50Per = listOfTourLenghts[:halfLenght]
-second50Per = listOfTourLenghts[halfLenght:]
-first50PerPop = population[:halfLenght]
-second50PerPop = population[halfLenght:]
+   if noImproveCount >=5:
+      print("Best solution has not changed for 5 consecuetive gen")
+      break
 
-nextGeneration = []
-nextGeneration.append(elitism)
+populationCopy = [c.copy() for c in population]
+lenghtCopy = listOfTourLenghts.copy()
+populationCopy.pop(indexOfElit)
+lenghtCopy.pop(indexOfElit)
+halfLenght = int(len(lenghtCopy) * 0.5)
+first50Per = lenghtCopy[:halfLenght]
+second50Per = lenghtCopy[halfLenght:]
+first50PerPop = populationCopy[:halfLenght]
+second50PerPop = populationCopy[halfLenght:]
 
-for chrom in population: 
- parentForRank = rankSolution(first50PerPop,first50Per)
- parentForWheel = rouletteSelection(second50PerPop,second50Per)
- nextGeneration.append(creatingNextGeneration(parentForRank,parentForWheel))
+nextGen = [elitisim]
+for _ in range(len(population)- 1):
+   parentForRank = rankSolution(first50PerPop,first50Per)
+   parentForWheel = rouletteSelection(second50PerPop,second50Per)
+   nextGen.append(creatingNextGeneration(parentForRank,parentForWheel))
 
-
-halfLenghtNew = int(len(nextGeneration) * 0.5)
-first50New = nextGeneration[:halfLenghtNew]
-first50New.pop(0)
-second50New = nextGeneration[halfLenghtNew:]
-
+newHalfLenght = int(len(nextGen) * 0.5)
+first50New = nextGen[1:newHalfLenght]
+second50New = nextGen[newHalfLenght:]
 insertMutation(first50New)
-
 randomSlide(second50New)
-print(randomSlide(second50New))
+population = nextGen
+
+
+   
