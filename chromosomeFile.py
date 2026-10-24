@@ -48,12 +48,15 @@ def tour_lenght(chromosome):
 listOfTourLenghts = [tour_lenght(chromosome) for chromosome in population]
 genCount = 0
 maxgen = 100
-bestTourLenght = 0
+bestTourLenght = float('inf')
 noImproveCount = 0
+#the conditions for stopping the generetain of new gen is eihter 100 or best not changing so we add these limits.
+
 while(genCount < maxgen and noImproveCount < 5):
    indexOfElit = listOfTourLenghts.index(min(listOfTourLenghts))
    bestLenght = listOfTourLenghts[indexOfElit]
    elitisim = population[indexOfElit].copy()
+   #we print the best of each generations best to terminal. it was asked in docx
    print(f"Generation: {genCount +1}. Best lenght: {bestLenght} ")
    if bestLenght < bestTourLenght:
       bestTourLenght = bestLenght
@@ -65,29 +68,35 @@ while(genCount < maxgen and noImproveCount < 5):
    if noImproveCount >=5:
       print("Best solution has not changed for 5 consecuetive gen")
       break
+   # making a copy of population so the original wont be harmed in case of something wrong 
+   populationCopy = [c.copy() for c in population]
+   lenghtCopy = listOfTourLenghts.copy()
 
-populationCopy = [c.copy() for c in population]
-lenghtCopy = listOfTourLenghts.copy()
-populationCopy.pop(indexOfElit)
-lenghtCopy.pop(indexOfElit)
-halfLenght = int(len(lenghtCopy) * 0.5)
-first50Per = lenghtCopy[:halfLenght]
-second50Per = lenghtCopy[halfLenght:]
-first50PerPop = populationCopy[:halfLenght]
-second50PerPop = populationCopy[halfLenght:]
+ #seperating the elit of thsi generation so we can add it directly to the other gen
+   populationCopy.pop(indexOfElit)
+   lenghtCopy.pop(indexOfElit)
+   halfLenght = int(len(lenghtCopy) * 0.5)
+ #%50 persentcs
+   first50Per = lenghtCopy[:halfLenght]
+   second50Per = lenghtCopy[halfLenght:]
+   first50PerPop = populationCopy[:halfLenght]
+   second50PerPop = populationCopy[halfLenght:]
 
-nextGen = [elitisim]
-for _ in range(len(population)- 1):
-   parentForRank = rankSolution(first50PerPop,first50Per)
-   parentForWheel = rouletteSelection(second50PerPop,second50Per)
-   nextGen.append(creatingNextGeneration(parentForRank,parentForWheel))
-
-newHalfLenght = int(len(nextGen) * 0.5)
-first50New = nextGen[1:newHalfLenght]
-second50New = nextGen[newHalfLenght:]
-insertMutation(first50New)
-randomSlide(second50New)
-population = nextGen
-
+   nextGen = [elitisim]
+ #for every chromosome minus the elite thus the -1 we get a parent from ecah selection rule and send it to crossover to create new chormosomes choom!
+   for _ in range(len(population)- 1):
+    parentForRank = rankSolution(first50PerPop,first50Per)
+    parentForWheel = rouletteSelection(second50PerPop,second50Per)
+    nextGen.append(creatingNextGeneration(parentForRank,parentForWheel))
+ #%50 of the new gen for mutations
+   newHalfLenght = int(len(nextGen) * 0.5)
+   first50New = nextGen[1:newHalfLenght]
+   second50New = nextGen[newHalfLenght:]
+   insertMutation(first50New)
+   randomSlide(second50New)
+ #replace the population with new generation.
+ #add new populations tour lenght to listoftourlegnhts
+   population = nextGen
+   listOfTourLenghts = [tour_lenght(chromosome) for chromosome in population]
 
    
