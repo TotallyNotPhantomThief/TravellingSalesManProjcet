@@ -6,7 +6,7 @@ def randomSlide(nextGen):
     mutatedListRandom = []
     
     for chromosome in nextGen:
-        index = random.randint(0,len(chromosome))
+        index = random.randint(0,len(chromosome)-1)
         genToMutate = random.choice(chromosome)
         chromosome.remove(genToMutate)
         chromosome.insert(index,genToMutate)
