@@ -1,8 +1,5 @@
 ﻿# TravellingSalesManProjcet
 Travelling Salesman Problem – Genetic Algorithm
-
-A Python genetic algorithm that searches for a short round trip through all cities of a Travelling Salesman Problem (TSP) instance. Built for the CMP457 Evolutionary Algorithms course at Biruni University.
-
 The problem
 
 Given a set of cities, find the shortest route that visits every city exactly once and returns to the starting city. The number of possible routes grows factorially with the number of cities, so evolutionary search is a practical way to find good (not necessarily optimal) tours.
